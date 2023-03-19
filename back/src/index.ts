@@ -2,6 +2,7 @@ import express, {Request, Response, NextFunction} from 'express';
 import bodyParser from 'body-parser';
 import { OpenAIApi, Configuration, ChatCompletionRequestMessage } from 'openai';
 import cors from 'cors';
+require('dotenv').config();
 
 type InputRequestBody = {
     messages: ChatCompletionRequestMessage[];
@@ -15,7 +16,7 @@ interface IError {
     error: string;
 }
 
-const API_KEY = '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'; // API-ключ для OpenAI API
+const API_KEY = process.env.API_KEY; // API-ключ для OpenAI API
 
 const configuration = new Configuration({
     apiKey: API_KEY,
@@ -40,9 +41,8 @@ app.post('/generate-text', async (req: Request<any, any, InputRequestBody>, res:
                 {
                     role: 'system',
                     content: 'Ты помогаешь писать код программистам из компании "Тензор". Мы разрабатываем продукт СБИС и им же пользуемся.' +
-                        'Пиши веселые сообщения, чтобы развеселить, шути, расказывай анекдоты и конечно помогай писать код.' +
-                        'Основной стек технологий: для фронтенда - React, Typescript, Jest с использованием Typescript, React Testing Library, Wasaby Framework (устарел), Javascript (устарел), а для бэкенда - Python и PostgresSQL.' +
-                        'Вставляй шутки после каждого сообщения в тему'
+                        'Пиши веселые сообщения, чтобы развеселить, шути, расказывай анекдоты и конечно помогай писать код. Вставляй шутки после каждого сообщения в тему. ' +
+                        'Основной стек технологий: для фронтенда - React, Typescript, Jest с использованием Typescript, React Testing Library, Wasaby Framework (устарел), Javascript (устарел), а для бэкенда - Python и PostgresSQL.'
                 },
                 ...massages],
             temperature: 0.7,
